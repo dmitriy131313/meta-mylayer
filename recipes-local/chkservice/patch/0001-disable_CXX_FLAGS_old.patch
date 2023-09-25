@@ -1,0 +1,29 @@
+From 8fed25e2d6ca4a7e222bde885712e117580d9eee Mon Sep 17 00:00:00 2001
+From: Dmitriy <dmitriy131313@yandex.ru>
+Date: Sun, 2 Apr 2023 08:57:37 +0300
+Subject: [PATCH] disable_CXX_FLAGS
+
+---
+ CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 96297c7..ee29e81 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -7,10 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ 
+ if ($ENV{DEBUG})
+   message(STATUS "DEBUG mode enabled")
+-  set (CMAKE_CXX_FLAGS "-g -Wall")
++  #set (CMAKE_CXX_FLAGS "-g -Wall")
+ else()
+   message(STATUS "DEBUG mode disabled")
+-  set (CMAKE_CXX_FLAGS "-O2")
++  #set (CMAKE_CXX_FLAGS "-O2")
+ endif()
+ 
+ if ($ENV{TRAVIS})
+-- 
+2.34.1
+

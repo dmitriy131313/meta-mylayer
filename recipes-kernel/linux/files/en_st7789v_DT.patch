@@ -1,0 +1,39 @@
+diff --git a/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts b/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
+index ca94e313f..e69e41410 100644
+--- a/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
++++ b/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
+@@ -226,6 +226,34 @@ wifi_wake: wifi_wake {
+ 		pins = "PG10";
+ 		function = "gpio_in";
+     };
++
++    st7789v_pins: st7789v_pins {
++        pins = "PA12", "PA11"; /*RESET, DC_RS*/
++        function = "gpio_out", "gpio_out" ;
++    };
++};
++
++&spi1 {
++	/* Disable SPI NOR by default: it optional on Orange Pi Zero boards */
++	status = "okay";
++	cs-gpios = <&pio 0 13 0>; /* PD0 */
++
++    st7789v: st7789v@0 {
++        compatible = "sitronix,st7789v_240x320"; /*sitronix,st7789v_240x320*/
++        reg = <0>;
++        pinctrl-names = "default";
++        pinctrl-0 = <&st7789v_pins>;
++        spi-max-frequency = <50000000>;
++        rotation = <90>;
++        bgr;
++        fps = <60>;
++        buswidth = <8>;
++        reset-gpios = <&pio 0 12 0>; /*RESET=PD4*/
++        dc-gpios = <&pio 0 11 0>; /*DC_RS=PC0*/
++        txbuflen = <153600>;
++        /*led-gpios = <&pio 2 4 0>; LED=PC4*/
++        debug = <0>;
++    };
+ };
+ 
+ &r_pio {

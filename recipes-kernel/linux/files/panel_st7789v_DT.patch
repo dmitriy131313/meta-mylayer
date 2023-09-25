@@ -1,0 +1,220 @@
+diff --git a/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts b/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
+index ca94e313f..f28f7b0a2 100644
+--- a/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
++++ b/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
+@@ -114,6 +114,46 @@ pwrseq_wifi: pwrseq_wifi {
+ 		reset-gpios = <&r_pio 0 7 GPIO_ACTIVE_LOW>;
+ 		post-power-on-delay-ms = <50>;
+ 	};
++
++    // backlightlcdtft: backlightlcdtft {
++    //   compatible = "pwm-backlight";
++    //   pwms = <&pwm 0 5000000 0>;
++    //   brightness-levels = <0 8 16 32 48 64 80 96 160 210 240>; //max=255
++    //   default-brightness-level = <8>;
++    //   power-supply = <&reg_vcc3v3>;
++    //   //post-pwm-on-delay-ms = <10>;
++    //   //pwm-off-delay-ms = <10>;
++    // };
++
++    // panel_st7789v: panel_st7789v {
++    //     compatible = "sitronix,st7789v";
++	// 	#address-cells = <1>;
++	// 	#size-cells = <0>;
++    //     reg = <0>;
++    //     // pinctrl-names = "default";
++    //     // pinctrl-0 = <&st7789v_pins>;
++    //     spi-max-frequency = <10000000>;
++    //     spi-cpol;
++    //     spi-cpha;
++    //     power-supply = <&reg_vcc3v3>;
++    //     rotate = <90>;
++    //     fps = <25>;
++    //     // buswidth = <9>;
++    //     txbuflen = <16384>; 
++    //     reset-gpios = <&pio 0 12 0>; /*RESET=PD4*/
++    //     dc-gpios = <&pio 0 11 0>; /*DC_RS=PC0*/
++    //     // led-gpios = <&pio 0 3 0>; /* LED=PC4*/
++    //     // backlight = <&backlightlcdtft>;
++	// 	// backlight = <&pio 0 5 0>;
++    //     debug = <0>;
++
++	// 	port {
++	// 		reg = <0>;
++	// 	    panel_input: endpoint {
++	// 		    remote-endpoint = <&tcon0_panel>;
++	// 	    };
++	// 	};
++    // };
+ };
+ 
+ &cpu0 {
+@@ -175,19 +215,110 @@ &ohci1 {
+ 	status = "okay";
+ };
+ 
++// &spi0 {
++// 	/* Disable SPI NOR by default: it optional on Orange Pi Zero boards */
++// 	status = "disabled";
++
++// 	flash@0 {
++// 		#address-cells = <1>;
++// 		#size-cells = <1>;
++// 		compatible = "mxicy,mx25l1606e", "jedec,spi-nor";
++// 		reg = <0>;
++// 		spi-max-frequency = <40000000>;
++// 	};
++// };
++
++// &pio {
++//     pwm0_pin: pwm0_pin {
++//         pins = "PA5";
++//         function = "pwm0";
++//     };
++// };
++
++// &pwm {
++//     pinctrl-names = "default";
++//     pinctrl-0 = <&pwm0_pin>;
++//     status = "okay";
++// };
++
++// &pio {
++// 	st7789v_pins: st7789v_pins {
++// 	    pins = "PA12", "PA11", "PA3"; /*RESET, DC_RS, LED*/
++// 	    function = "gpio_out", "gpio_out", "gpio_out";
++// 	};
++// };
++
+ &spi0 {
+-	/* Disable SPI NOR by default: it optional on Orange Pi Zero boards */
+-	status = "disabled";
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0_pins>;
++	// cs-gpios = <&pio 0 13 0>; /* PA13 */
+ 
+-	flash@0 {
++    panel_st7789v@0 {
++		status = "okay";
++        compatible = "sitronix,st7789v"; /*sitronix,st7789v_240x320*/
+ 		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "mxicy,mx25l1606e", "jedec,spi-nor";
+-		reg = <0>;
+-		spi-max-frequency = <40000000>;
+-	};
++		#size-cells = <0>;
++        reg = <0>;
++        // pinctrl-names = "default";
++        // pinctrl-0 = <&st7789v_pins>;
++        spi-max-frequency = <10000000>;
++        spi-cpol;
++        spi-cpha;
++        // power-supply = <&reg_vcc3v3>;
++        rotate = <90>;
++        fps = <25>;
++        buswidth = <8>;
++        txbuflen = <16384>; 
++        reset-gpios = <&pio 0 12 0>; /*RESET=PD4*/
++        dc-gpios = <&pio 0 11 0>; /*DC_RS=PC0*/
++        // led-gpios = <&pio 0 3 0>; /* LED=PC4*/
++        // backlight = <&backlightlcdtft>;
++		// backlight = <&pio 0 5 0>;
++        debug = <0>;
++
++		port {
++			reg = <0>;
++		    panel_input: endpoint {
++			    remote-endpoint = <&de_input>;
++		    };
++		};
++    };
+ };
+ 
++// &hdmi_out {
++// 	hdmi_out_con: endpoint {
++// 		remote-endpoint = <&panel_input>;
++// 	};
++// };
++
++// &tcon0 {
++// 	ports {
++// 		tcon0_out_panel: port@2 {
++// 			#address-cells = <1>;
++// 			#size-cells = <0>;
++// 			reg = <2>;
++
++// 			tcon0_panel: endpoint@2 {
++// 				reg = <2>;
++// 				remote-endpoint = <&panel_input>;
++// 			};
++// 		};
++// 	};
++// };
++
++// &mixer0 {
++// 	ports {
++// 		mixer0_spi: port@2 {
++// 			reg = <2>;
++
++// 			mixer0_out_spi: endpoint {
++// 				remote-endpoint = <&panel_input>;
++// 			};
++// 		};
++// 	};
++// };
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pa_pins>;
+@@ -235,3 +366,49 @@ wifi_rst: wifi_rst {
+     };
+ };
+ 
++&de {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++	port {
++		reg = <0>;
++		de_input: endpoint {
++			remote-endpoint = <&panel_input>;
++		};
++	};
++};
++
++// &hdmi {
++// 	status = "okay";
++// };
++
++
++// spi@78b9000 {
++// 	/ On Low speed expansion /
++// 	label = “LS-SPI0”;
++// 	status = “okay”;
++// 	ports {
++// 		port@1 {
++// 			reg = <1>;
++// 			spi_out: endpoint {
++// 				remote-endpoint = <&truly_in>;
++// 			};
++// 		};
++// 	};
++
++// 	panel@0 {
++// 		label = “reset_gpios”;
++// 		compatible = “sitronix,st7789v”;
++// 		reg = <0>;
++// 		backlight = <&backlight>;
++// 		reset-gpio = <&msmgpio 10 GPIO_ACTIVE_LOW>;
++// 		spi-max-frequency = <100000>;
++// 		spi-cpol;
++// 		spi-cpha;
++// 		port {
++// 			truly_in: endpoint {
++// 				remote-endpoint = <&spi_out>;
++// 			};
++// 		};
++// 	};
++// };

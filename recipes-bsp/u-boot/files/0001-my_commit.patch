@@ -1,0 +1,26 @@
+From a1ba3a2268dda7c8f83e1e85b7a21208f77e2c83 Mon Sep 17 00:00:00 2001
+From: Dmitriy <dmitriy131313@yandex.ru>
+Date: Thu, 16 Mar 2023 20:52:24 +0300
+Subject: [PATCH] my_commit
+
+---
+ configs/orangepi_zero_defconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/configs/orangepi_zero_defconfig b/configs/orangepi_zero_defconfig
+index 6fb2fbbda2..34e62400c3 100644
+--- a/configs/orangepi_zero_defconfig
++++ b/configs/orangepi_zero_defconfig
+@@ -13,6 +13,7 @@ CONFIG_SYS_SPI_U_BOOT_OFFS=0x8000
+ CONFIG_DEFAULT_DEVICE_TREE="sun8i-h2-plus-orangepi-zero"
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_SUN8I_EMAC=y
+-CONFIG_USB_EHCI_HCD=y
+-CONFIG_USB_OHCI_HCD=y
++# CONFIG_USB_EHCI_HCD is not set
++# CONFIG_USB_OHCI_HCD is not set
+ CONFIG_SYS_USB_EVENT_POLL_VIA_INT_QUEUE=y
++CONFIG_BOOTDELAY=0
+-- 
+2.34.1
+

@@ -1,0 +1,26 @@
+abt,y030xx067a
+dlink,dir-685-panel   ilitek,ili9322
+st,sf-tc240t-9370-t   adafruit,yx240qv29
+innolux,ej030na
+lgphilips,lb035q02
+lg,lg4573
+nec,nl8048hl11
+leadtek,ltk035c5444t
+kingdisplay,kd035g6-54nt
+samsung,lms397kf04
+samsung,ld9040
+samsung,s6d27a1
+samsung,s6e63m0
+sony,acx565akm
+tpo,td028ttec1   toppoly,td028ttec1
+tpo,td043mtea1
+tpo,tpg110
+samsung,lms380kf01
+
+
+tinyDrm
+
+sinowealth,sh1106   solomon,ssd1305   solomon,ssd1306   solomon,ssd1307   solomon,ssd1309
+adafruit,yx350hv15
+newhaven,1.8-128160EF
+vot,v220hf01a-t

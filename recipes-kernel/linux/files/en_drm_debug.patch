@@ -1,0 +1,14 @@
+diff --git a/drivers/gpu/drm/drm_print.c b/drivers/gpu/drm/drm_print.c
+index 5b93c1189..0da1fc8f3 100644
+--- a/drivers/gpu/drm/drm_print.c
++++ b/drivers/gpu/drm/drm_print.c
+@@ -308,7 +308,8 @@ void ___drm_dbg(struct _ddebug *desc, enum drm_debug_category category, const ch
+ {
+ 	struct va_format vaf;
+ 	va_list args;
+-
++	printk(">>>>>>> category: %d  &   flag: %x;   result: %d >>>>>>>\n", (int)category, __drm_debug, __drm_debug_enabled(category));
++	
+ 	if (!__drm_debug_enabled(category))
+ 		return;
+ 
