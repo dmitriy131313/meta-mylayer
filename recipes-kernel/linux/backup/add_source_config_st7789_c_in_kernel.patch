@@ -1,0 +1,42 @@
+From 3529bbf84e9ccccafabfdebc10586146ac2d3364 Mon Sep 17 00:00:00 2001
+From: Dmitriy <dmitriy131313@yandex.ru>
+Date: Thu, 10 Aug 2023 20:54:34 +0300
+Subject: [PATCH] st7789_patch
+
+---
+ drivers/gpu/drm/tiny/Kconfig  | 11 +++++++++++
+ drivers/gpu/drm/tiny/Makefile |  1 +
+ 2 files changed, 12 insertions(+)
+
+diff --git a/drivers/gpu/drm/tiny/Kconfig b/drivers/gpu/drm/tiny/Kconfig
+index 565957264..914a2c674 100644
+--- a/drivers/gpu/drm/tiny/Kconfig
++++ b/drivers/gpu/drm/tiny/Kconfig
+@@ -199,3 +199,14 @@ config TINYDRM_ST7735R
+ 	  * Okaya RH128128T 1.44" 128x128 TFT
+ 
+ 	  If M is selected the module will be called st7735r.
++config TINYDRM_ST7789V
++	tristate "DRM support for Sitronix ST7789V display panels"
++	depends on DRM && SPI
++	select DRM_KMS_HELPER
++	select DRM_GEM_DMA_HELPER
++	select DRM_MIPI_DBI
++	select BACKLIGHT_CLASS_DEVICE
++	help
++	  DRM driver for Sitronix ST7789V panels.
++	  If M is selected the module will be called st7789v.
++	  
+\ No newline at end of file
+diff --git a/drivers/gpu/drm/tiny/Makefile b/drivers/gpu/drm/tiny/Makefile
+index 1d9d6227e..b7a7efe35 100644
+--- a/drivers/gpu/drm/tiny/Makefile
++++ b/drivers/gpu/drm/tiny/Makefile
+@@ -15,3 +15,4 @@ obj-$(CONFIG_TINYDRM_MI0283QT)		+= mi0283qt.o
+ obj-$(CONFIG_TINYDRM_REPAPER)		+= repaper.o
+ obj-$(CONFIG_TINYDRM_ST7586)		+= st7586.o
+ obj-$(CONFIG_TINYDRM_ST7735R)		+= st7735r.o
++obj-$(CONFIG_TINYDRM_ST7789V)		+= st7789v.o
+-- 
+2.34.1
+

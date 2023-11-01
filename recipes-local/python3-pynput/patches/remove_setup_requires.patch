@@ -1,0 +1,13 @@
+Index: pynput-1.7.6/setup.py
+===================================================================
+--- pynput-1.7.6.orig/setup.py
++++ pynput-1.7.6/setup.py
+@@ -91,7 +91,7 @@ setuptools.setup(
+     long_description=README + '\n\n' + CHANGES,
+ 
+     install_requires=RUNTIME_PACKAGES,
+-    setup_requires=RUNTIME_PACKAGES + SETUP_PACKAGES,
++    #setup_requires=RUNTIME_PACKAGES + SETUP_PACKAGES,
+     extras_require=EXTRA_PACKAGES,
+ 
+     author=INFO['author'],

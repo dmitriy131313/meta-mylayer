@@ -195,6 +195,11 @@ out_exit:
     drm_dev_exit(idx);
 }
 
+static void st7789v_update_dummy(struct drm_simple_display_pipe *pipe,
+			  struct drm_plane_state *old_state)
+{
+}
+
 static const struct drm_simple_display_pipe_funcs st7789v_pipe_funcs = {
     .mode_valid = mipi_dbi_pipe_mode_valid,
     .enable = st7789v_pipe_enable,
@@ -220,7 +225,7 @@ static struct drm_driver st7789v_driver = {
     DRM_GEM_DMA_DRIVER_OPS_VMAP,
     .debugfs_init = mipi_dbi_debugfs_init,
     .name = "st7735r",
-    .desc = "Sitronix st7789v",
+    .desc = "Sitronix st7735r",
     .date = "20171128",
     .major = 1,
     .minor = 0,
@@ -345,7 +350,7 @@ static void st7789v_shutdown(struct spi_device *spi)
 static struct spi_driver st7789v_spi_driver = {
     .driver =
         {
-            .name = "st7789v",
+            .name = "st7735r",
             .of_match_table = st7789v_of_match,
         },
     .id_table = st7789v_id,

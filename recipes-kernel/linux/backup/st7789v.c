@@ -14,6 +14,8 @@
 
 #include <drm/drm_gem_atomic_helper.h>
 #include <drm/drm_gem_dma_helper.h>
+// #include <drm/drm_gem_cma_helper.h>
+//  #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_managed.h>
 #include <drm/drm_mipi_dbi.h>
 
@@ -195,11 +197,18 @@ out_exit:
     drm_dev_exit(idx);
 }
 
+static void st7789v_update_dummy(struct drm_simple_display_pipe *pipe,
+			  struct drm_plane_state *old_state)
+{
+}
+
 static const struct drm_simple_display_pipe_funcs st7789v_pipe_funcs = {
     .mode_valid = mipi_dbi_pipe_mode_valid,
     .enable = st7789v_pipe_enable,
     .disable = mipi_dbi_pipe_disable,
-    .update = mipi_dbi_pipe_update
+    .update = mipi_dbi_pipe_update,
+    // .update = st7789v_update_dummy,
+    // .prepare_fb = drm_gem_simple_display_pipe_prepare_fb,
 };
 
 static const struct st7789v_cfg st7789v_240x240 = {
@@ -219,8 +228,8 @@ static struct drm_driver st7789v_driver = {
     .fops = &st7789v_fops,
     DRM_GEM_DMA_DRIVER_OPS_VMAP,
     .debugfs_init = mipi_dbi_debugfs_init,
-    .name = "st7735r",
-    .desc = "Sitronix st7789v",
+    .name = "st7789v",
+    .desc = "Sitronix ST7789V",
     .date = "20171128",
     .major = 1,
     .minor = 0,
@@ -286,6 +295,7 @@ static int st7789v_probe(struct spi_device *spi)
         return PTR_ERR(dbidev->backlight);
 
     device_property_read_u32(dev, "rotation", &rotation);
+    printk(">>>>>>> st7789v_probe; rotation: %d >>>>>>>\n", rotation);
     dbidev->rotation = rotation;
 
     ret = mipi_dbi_spi_init(spi, dbi, dc);
@@ -303,16 +313,10 @@ static int st7789v_probe(struct spi_device *spi)
     // if (ret) return ret;
 
     static const uint32_t mipi_dbi_formats1[] = {
-        DRM_FORMAT_RGB565,
-        DRM_FORMAT_RGB888,
-        DRM_FORMAT_RGBX8888,
-        DRM_FORMAT_XRGB8888,
-        DRM_FORMAT_ARGB8888,
-        DRM_FORMAT_RGBA8888
+        DRM_FORMAT_RGB565
     };
-    size_t bufsize = cfg->mode.vdisplay * cfg->mode.hdisplay * 4;
-    dbidev->drm.mode_config.preferred_depth = 32;
-    //dbidev->drm.mode_config.prefer_shadow = 1;
+    size_t bufsize = cfg->mode.vdisplay * cfg->mode.hdisplay * sizeof(u16) * 2;
+    dbidev->drm.mode_config.preferred_depth = 16;
     ret = mipi_dbi_dev_init_with_formats(dbidev, &st7789v_pipe_funcs, mipi_dbi_formats1, ARRAY_SIZE(mipi_dbi_formats1), &cfg->mode, rotation, bufsize);
     if (ret) return ret;
 
@@ -324,7 +328,7 @@ static int st7789v_probe(struct spi_device *spi)
 
     spi_set_drvdata(spi, drm);
 
-    drm_fbdev_generic_setup(drm, 32);
+    drm_fbdev_generic_setup(drm, 0);
 
     return 0;
 }
@@ -345,7 +349,7 @@ static void st7789v_shutdown(struct spi_device *spi)
 static struct spi_driver st7789v_spi_driver = {
     .driver =
         {
-            .name = "st7789v",
+            .name = "st7735r",
             .of_match_table = st7789v_of_match,
         },
     .id_table = st7789v_id,

@@ -1,0 +1,1 @@
+PREFERRED_VERSION_python3-pynput = "1.7.6"

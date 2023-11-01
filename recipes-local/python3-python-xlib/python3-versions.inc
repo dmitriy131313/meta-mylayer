@@ -1,0 +1,1 @@
+PREFERRED_VERSION_python3-python-xlib = "0.33"

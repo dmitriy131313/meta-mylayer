@@ -1,13 +1,24 @@
 diff --git a/drivers/gpu/drm/drm_mipi_dbi.c b/drivers/gpu/drm/drm_mipi_dbi.c
-index a6ac56580..683d6229a 100644
+old mode 100755
+new mode 100644
+index a6ac56580..0ae42f9b3
 --- a/drivers/gpu/drm/drm_mipi_dbi.c
 +++ b/drivers/gpu/drm/drm_mipi_dbi.c
-@@ -474,7 +474,7 @@ static const struct drm_mode_config_funcs mipi_dbi_mode_config_funcs = {
+@@ -223,6 +223,7 @@ int mipi_dbi_buf_copy(void *dst, struct drm_framebuffer *fb,
+ 		else
+ 			drm_fb_memcpy(&dst_map, NULL, data, fb, clip);
+ 		break;
++	case DRM_FORMAT_ARGB8888:
+ 	case DRM_FORMAT_XRGB8888:
+ 		drm_fb_xrgb8888_to_rgb565(&dst_map, NULL, data, fb, clip, swap);
+ 		break;
+@@ -285,7 +286,8 @@ static void mipi_dbi_fb_dirty(struct drm_framebuffer *fb, struct drm_rect *rect)
+ 	DRM_DEBUG_KMS("Flushing [FB:%d] " DRM_RECT_FMT "\n", fb->base.id, DRM_RECT_ARG(rect));
  
- static const uint32_t mipi_dbi_formats[] = {
- 	DRM_FORMAT_RGB565,
--	DRM_FORMAT_XRGB8888,
-+	//DRM_FORMAT_XRGB8888,
- };
- 
- /**
+ 	if (!dbi->dc || !full || swap ||
+-	    fb->format->format == DRM_FORMAT_XRGB8888) {
++	    fb->format->format == DRM_FORMAT_XRGB8888 ||
++	    fb->format->format == DRM_FORMAT_ARGB8888) {
+ 		tr = dbidev->tx_buf;
+ 		ret = mipi_dbi_buf_copy(dbidev->tx_buf, fb, rect, swap);
+ 		if (ret)

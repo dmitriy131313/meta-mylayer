@@ -1,0 +1,1 @@
+PREFERRED_VERSION_python3-opi-gpio = "0.5.2"

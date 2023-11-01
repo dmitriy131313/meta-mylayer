@@ -1,0 +1,8 @@
+[Unit]
+Description=Xbox 360 gamepad emulator
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/bin/xbox360gamepad.py
+
+[Install]
+WantedBy=default.target
