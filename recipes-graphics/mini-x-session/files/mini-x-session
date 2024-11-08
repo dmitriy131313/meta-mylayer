@@ -35,6 +35,6 @@ xrandr -s 320x240
 # Default files to run if $HOME/.mini_x/session or /etc/mini_x/session
 # dont exist. 
 
-exec zdoom -iwad /usr/share/games/doom/freedoom1.wad -config /etc/zdoom/zdoom.ini &
-#matchbox-terminal&
+# exec zdoom -iwad /usr/share/games/doom/freedoom1.wad -config /etc/zdoom/zdoom.ini &
+matchbox-terminal&
 exec matchbox-window-manager

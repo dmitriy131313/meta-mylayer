@@ -1,0 +1,13 @@
+[Unit]
+Description=Xbox 360 gamepad emulator
+
+[Service]
+ExecStart=/usr/bin/xbox360virtual_gamepad_daemon.bin
+ExecStop=/bin/kill $MAINPID
+KillMode=process
+Type=simple
+StandardOutput=/var/xbox360service.log
+StandardError=/var/xbox360service_error.log
+
+[Install]
+WantedBy=default.target

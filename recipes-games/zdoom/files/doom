@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec /usr/bin/zdoom -iwad /usr/share/games/doom/freedoom1.wad -config /etc/zdoom/zdoom.ini
